@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Volleyball\Component\Utility\Model\CarouselItem as BaseCarouselItem;
 use Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
@@ -14,11 +15,41 @@ use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 * @ORM\Entity
 * @ORM\Table(name="carousel_item")
 */
-class CarouselItem
+class CarouselItem extends BaseCarouselItem
 {
     use EntityBootstrapTrait;
     use SluggableTrait;
     use TimestampableTrait;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "250",
+     *      minMessage = "Name must be at least {{ limit }} characters length",
+     *      maxMessage = "Name cannot be longer than {{ limit }} characters length"
+     * )
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        
+        return $this;
+    }
 
     /**
      * @ORM\Column(type="string")

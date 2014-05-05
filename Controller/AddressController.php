@@ -12,6 +12,9 @@ use Volleyball\Bundle\UtilityBundle\Entity\Address;
 use Volleyball\Bundle\UtilityBundle\Form\Type\AddressType;
 use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
 
+/**
+ * @Route("/addresses")
+ */
 class AddressController extends Controller
 {
     /**

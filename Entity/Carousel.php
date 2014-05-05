@@ -13,24 +13,53 @@ use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="carousel")
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="carousel")
+ */
 class Carousel extends BaseCarousel
 {
     use EntityBootstrapTrait;
     use SluggableTrait;
     use TimestampableTrait;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "250",
+     *      minMessage = "Name must be at least {{ limit }} characters length",
+     *      maxMessage = "Name cannot be longer than {{ limit }} characters length"
+     * )
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        
+        return $this;
+    }
 
     /**
+     * {@inheritdoc}
      * @ORM\OneToMany(targetEntity="CarouselItem", mappedBy="carousel")
      */
     protected $items;
 
     /**
-     * Get items
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getItems()
     {
@@ -38,15 +67,11 @@ class Carousel extends BaseCarousel
     }
 
     /**
-     * Set items
-     *
-     * @param array $items items
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function setItems(array $items)
     {
-        if (! $items instanceof ArrayCollection) {
+        if (!$items instanceof ArrayCollection) {
             $items = new ArrayCollection($items);
         }
 
@@ -66,31 +91,13 @@ class Carousel extends BaseCarousel
     }
 
     /**
-     * Get a item
-     *
-     * @param CarouselItem|String $item item
-     *
-     * @return CarouselItem
+     * {@inheritdoc}
      */
     public function getItem($item)
     {
         return $this->items->get($item);
     }
-
-    /**
-     * Add a item
-     *
-     * @param CarouselItem $item item
-     *
-     * @return self
-     */
-    public function addItem(CarouselItem $item)
-    {
-        $this->items[] = $item;
-
-        return $this;
-    }
-
+        
     /**
      * Remove a item
      *

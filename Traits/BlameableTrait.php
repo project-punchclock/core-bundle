@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilItybundLe\traits;
+namespace Volleyball\Bundle\UtilityBundle\traits;
 
 use Volleyball\Bundle\UserBundle\Entity\User;
 

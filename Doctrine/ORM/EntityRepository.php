@@ -2,12 +2,12 @@
 namespace Volleyball\Bundle\UtilityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
-use Volleyball\Bundle\UtilityBundle\Interfaces\RepositoryInterface;
+use Volleyball\Component\Utility\Interfaces\RepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
-class EntityRepository extends BaseEntityRepository implements RepositoryInterface
+class EntityRepository extends BaseEntityRepository // implements RepositoryInterface
 {
     /**
      * Create new entity

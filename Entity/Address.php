@@ -4,7 +4,7 @@ namespace Volleyball\Bundle\UtilityBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
+use Volleyball\Component\Utility\Model\Address as BaseAddress;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\GeolocatableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
@@ -13,9 +13,8 @@ use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 * @ORM\Entity
 * @ORM\Table(name="address_book")
 */
-class Address
+class Address extends BaseAddress
 {
-    use EntityBootstrapTrait;
     use GeolocatableTrait;
     use TimestampableTrait;
     use SluggableTrait;

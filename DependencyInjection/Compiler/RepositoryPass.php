@@ -1,11 +1,11 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\DependencyInjection;
+namespace Volleyball\Bundle\UtilityBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class CompilerPass implements CompilerPassInterface
+class RepositoryPass implements CompilerPassInterface
 {
     /**
      * 
@@ -16,7 +16,7 @@ class CompilerPass implements CompilerPassInterface
         $factory = $container->findDefinition('volleyball.repository.factory');
  
         $repositories = [];
-        foreach ($container->findTaggedServiceIds('app.repository') as $id => $params) {
+        foreach ($container->findTaggedServiceIds('volleyball.repository') as $id => $params) {
             foreach ($params as $param) {
                 $repositories[$param['class']] = $id;
                 $repository = $container->findDefinition($id);
