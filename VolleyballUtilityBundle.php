@@ -12,6 +12,6 @@ class VolleyballUtilityBundle extends Bundle
     {
         parent::build($container);
         
-        //$container->addCompilerPass(new RepositoryPass());
+        $container->addCompilerPass(new RepositoryPass());
     }
 }

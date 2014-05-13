@@ -3,21 +3,55 @@ namespace Volleyball\Bundle\UtilityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Volleyball\Component\Utility\Model\Address as BaseAddress;
+use Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\GeolocatableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use Volleyball\Bundle\UtilityBundle\Repository\AddressRepository;
 
 /**
-* @ORM\Entity
+* @ORM\Entity(repositoryClass="AddressRepository")
 * @ORM\Table(name="address_book")
 */
 class Address extends BaseAddress
 {
+    use EntityBootstrapTrait;
     use GeolocatableTrait;
     use TimestampableTrait;
     use SluggableTrait;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "250",
+     *      minMessage = "Name must be at least {{ limit }} characters length",
+     *      maxMessage = "Name cannot be longer than {{ limit }} characters length"
+     * )
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        
+        return $this;
+    }
 
     /**
     * @ORM\Column(type="string", length=150)

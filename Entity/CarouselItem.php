@@ -12,7 +12,7 @@ use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
-* @ORM\Entity
+* @ORM\Entity(repositoryClass="Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository")
 * @ORM\Table(name="carousel_item")
 */
 class CarouselItem extends BaseCarouselItem

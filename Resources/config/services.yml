@@ -1,34 +1,67 @@
+parameters:
+    volleyball.listener.utility.class: Volleyball\Bundle\UtilityBundle\Listener\UtilityListener
+    
+    volleyball.menu.builder.class: Volleyball\Bundle\UtilityBundle\Menu\MenuBuilder
+    volleyball.menu.main.class: Knp\Menu\MenuItem
+    volleyball.menu.nonauth.class: Knp\Menu\MenuItem
+    volleyball.menu.voter.request.class: Volleyball\Bundle\UtilityBundle\Menu\RequestVoter
+    
+    volleyball.repository.factory_service: doctrine.orm.default_entity_manager
+    volleyball.repository.factory.class: Volleyball\Component\Utility\Repository\RepositoryFactory
+    volleyball.repository.factory.default.class: Volleyball\Component\Utility\Repository\RepositoryFactory
+    
+    volleyball.repository.address.class: Volleyball\Bundle\UtilityBundle\Repository\AddressRepository
+    volleyball.repository.address.entity: Volleyball\Bundle\UtilityBundle\Entity\Address
+    
+    volleyball.repository.carousel.class: Volleyball\Bundle\UtilityBundle\Repository\CarouselRepository
+    volleyball.repository.carousel.entity: Volleyball\Bundle\UtilityBundle\Entity\Carousel
+    
+    volleyball.repository.carousel_item.class: Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository
+    volleyball.repository.carousel_item.entity: Volleyball\Bundle\UtilityBundle\Entity\CarouselItem
+    
 services:
     volleyball.listener.utility:
-        class: Volleyball\Bundle\UtilityBundle\Listener\UtilityListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+        class: %volleyball.listener.utility.class%
+        tags: [{ name: kernel.event_listener, event: kernel.request, method: onKernelRequest }]
         arguments: [ @service_container ]
     
     volleyball.menu.builder:
-        class: Volleyball\Bundle\UtilityBundle\Menu\MenuBuilder
+        class: %volleyball.menu.builder.class%
         arguments: ["@knp_menu.factory", "@security.context", "@translator"]
-
     volleyball.menu.main:
-        class: Knp\Menu\MenuItem
+        class: %volleyball.menu.main.class%
         factory_service: volleyball.menu.builder
         factory_method: createMainMenu
         arguments: [ "@request" ]
         scope: request
-        tags:
-            - { name: knp_menu.menu, alias: main }
-
+        tags: [{ name: knp_menu.menu, alias: main }]
     volleyball.menu.nonauth:
-        class: Knp\Menu\MenuItem
+        class: %volleyball.menu.nonauth.class%
         factory_service: volleyball.menu.builder
         factory_method: createNonAuthMenu
         arguments: [ "@request" ]
         scope: request
-        tags:
-            - { name: knp_menu.menu, alias: nonauth }
-            
+        tags: [{ name: knp_menu.menu, alias: nonauth }]          
     volleyball.menu.voter.request:
-        class: Volleyball\Bundle\UtilityBundle\Menu\RequestVoter
+        class: %volleyball.menu.voter.request.class%
         arguments: [ "@service_container" ]
-        tags:
-            - { name: knp_menu.voter }
+        tags: [{ name: knp_menu.voter }]
+            
+    volleyball.repository.factory:
+        class: %volleyball.repository.factory.class%
+        arguments:
+            - []
+            - '@service_container'
+            - '@volleyball.repository.factory.default'
+    volleyball.repository.factory.default:
+        class: %volleyball.repository.factory.default.class%  
+        
+    volleyball.repository.address:
+        class: %volleyball.repository.address.entity%
+        tag: [{ name: volleyball.repository, alias: address }]
+    volleyball.repository.carousel:
+        class: %volleyball.repository.carousel.entity%
+        tag: [{ name: volleyball.repository, alias: carousel }]
+    volleyball.repository.carousel_item:
+        class: %volleyball.repository.carousel_item.entity%
+        tag: [{ name: volleyball.repository, alias: carousel_item }]

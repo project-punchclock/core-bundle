@@ -22,7 +22,7 @@ class RepositoryPass implements CompilerPassInterface
                 $repository = $container->findDefinition($id);
                 $repository->replaceArgument(0, new Reference('doctrine.orm.default_entity_manager'));
  
-                $definition = new Definition;
+                $definition = new Definition();
                 $definition->setClass('Doctrine\ORM\Mapping\ClassMetadata');
                 $definition->setFactoryService('doctrine.orm.default_entity_manager');
                 $definition->setFactoryMethod('getClassMetadata');
