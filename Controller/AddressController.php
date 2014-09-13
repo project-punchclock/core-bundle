@@ -10,18 +10,17 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 use Volleyball\Bundle\UtilityBundle\Entity\Address;
 use Volleyball\Bundle\UtilityBundle\Form\Type\AddressType;
-use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
 
 /**
  * @Route("/addresses")
  */
-class AddressController extends Controller
+class AddressController extends UtilityController
 {
     /**
      * @Route("/", name="volleyball_address_index")
      * @Template("VolleyballUtilityBundle:Address:index.html.twig")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         // get route name/params to decypher data to delimit by
         $query = $this->get('doctrine')
@@ -43,8 +42,9 @@ class AddressController extends Controller
      * @Route("/{slug}", name="volleyball_address_show")
      * @Template("VolleyballUtilityBundle:Address:show.html.twig")
      */
-    public function showAction($slug)
+    public function showAction(Request $request)
     {
+        $slug = $request->getParameter('slug');
         $address = $this->getDoctrine()
             ->getRepository('VolleyballUtilityBundle:Address')
             ->findOneBySlug($slug);

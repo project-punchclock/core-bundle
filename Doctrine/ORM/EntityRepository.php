@@ -1,13 +1,11 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityRepository as BaseEntityRepository;
-use Volleyball\Component\Utility\Interfaces\RepositoryInterface;
-use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
+use \Doctrine\ORM\QueryBuilder;
+use \Pagerfanta\Adapter\DoctrineORMAdapter;
+use \Pagerfanta\Pagerfanta;
 
-class EntityRepository extends BaseEntityRepository // implements RepositoryInterface
+class EntityRepository extends \Doctrine\ORM\EntityRepository implements \Volleyball\Component\Utility\Interfaces\RepositoryInterface
 {
     /**
      * Create new entity
@@ -171,5 +169,14 @@ class EntityRepository extends BaseEntityRepository // implements RepositoryInte
     protected function getAlias()
     {
         return 'o';
+    }
+    
+    public function search($query, $field = 'name')
+    {
+        return $this->getQueryBuilder()
+            ->andWhere($this->getAlias().'.'.$field.' LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->getQuery()
+            ->getResult();
     }
 }

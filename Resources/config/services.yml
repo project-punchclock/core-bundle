@@ -19,6 +19,8 @@ parameters:
     volleyball.repository.carousel_item.class: Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository
     volleyball.repository.carousel_item.entity: Volleyball\Bundle\UtilityBundle\Entity\CarouselItem
     
+    volleyball.inflector.class: Volleyball\Component\Utility\Inflector\Inflector
+        
 services:
     volleyball.listener.utility:
         class: %volleyball.listener.utility.class%
@@ -47,21 +49,5 @@ services:
         arguments: [ "@service_container" ]
         tags: [{ name: knp_menu.voter }]
             
-    volleyball.repository.factory:
-        class: %volleyball.repository.factory.class%
-        arguments:
-            - []
-            - '@service_container'
-            - '@volleyball.repository.factory.default'
-    volleyball.repository.factory.default:
-        class: %volleyball.repository.factory.default.class%  
-        
-    volleyball.repository.address:
-        class: %volleyball.repository.address.entity%
-        tag: [{ name: volleyball.repository, alias: address }]
-    volleyball.repository.carousel:
-        class: %volleyball.repository.carousel.entity%
-        tag: [{ name: volleyball.repository, alias: carousel }]
-    volleyball.repository.carousel_item:
-        class: %volleyball.repository.carousel_item.entity%
-        tag: [{ name: volleyball.repository, alias: carousel_item }]
+    volleyball.inflector: 
+        class: %volleyball.inflector.class%

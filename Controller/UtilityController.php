@@ -1,14 +1,14 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\DependencyInjection\ContainerInterface;
+use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use \Symfony\Component\Config\FileLocator;
+use \Symfony\Component\Yaml\Yaml;
+use \Doctrine\Common\Collections\ArrayCollection;
 
-class UtilityController extends Controller implements ContainerAwareInterface
+class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\ResourceController implements ContainerAwareInterface
 {
     /**
      * configuration settings
@@ -51,6 +51,8 @@ class UtilityController extends Controller implements ContainerAwareInterface
         $this->securityContext = $this->container->get('security.context');
         
         $this->generateBreadcrumbs();
+        
+        parent::setContainer($container);
     }
 
     /**
@@ -107,5 +109,271 @@ class UtilityController extends Controller implements ContainerAwareInterface
             'dashboard',
             $this->get('router')->generate('homepage')
         );
+    }
+    
+    
+    /**
+     * @inheritdoc
+     */
+    public function indexAction(Request $request)
+    {
+        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        
+        return parent::indexAction($request);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function showAction(Request $request)
+    {
+        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add('show');
+        
+        
+        return parent::showAction($request);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function createAction(Request $request)
+    {
+        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add('new');
+        
+        
+        return parent::showAction($request);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function updateAction(Request $request)
+    {
+        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add('update');
+        
+        
+        return parent::showAction($request);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function deleteAction(Request $request)
+    {
+        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add('delete');
+        
+        
+        return parent::showAction($request);
+    }
+    
+    /**
+     * @return object
+     */
+    public function createNew()
+    {
+        return $this->resourceResolver->createResource($this->getRepository(), 'createNew');
+    }
+
+    /**
+     * @param object|null $resource
+     *
+     * @return FormInterface
+     */
+    public function getForm($resource = null)
+    {
+        if ($this->config->isApiRequest()) {
+            return $this->container->get('form.factory')->createNamed('', $this->config->getFormType(), $resource);
+        }
+
+        return $this->createForm($this->config->getFormType(), $resource);
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $criteria
+     *
+     * @return object
+     *
+     * @throws NotFoundHttpException
+     */
+    public function findOr404(Request $request, array $criteria = array())
+    {
+        if ($request->get('slug')) {
+            $default = array('slug' => $request->get('slug'));
+        } elseif ($request->get('id')) {
+            $default = array('id' => $request->get('id'));
+        } else {
+            $default = array();
+        }
+
+        $criteria = array_merge($default, $criteria);
+
+        if (!$resource = $this->resourceResolver->getResource(
+            $this->getRepository(),
+            'findOneBy',
+            array($this->config->getCriteria($criteria)))
+        ) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'Requested %s does not exist with these criteria: %s.',
+                    $this->config->getResourceName(),
+                    json_encode($this->config->getCriteria($criteria))
+                )
+            );
+        }
+
+        return $resource;
+    }
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function getRepository()
+    {
+        return $this->get($this->config->getServiceName('repository'));
+    }
+
+    /**
+     * @param Request $request
+     * @param integer $movement
+     *
+     * @return RedirectResponse
+     */
+    protected function move(Request $request, $movement)
+    {
+        $resource = $this->findOr404($request);
+
+        $this->domainManager->move($resource, $movement);
+
+        return $this->redirectHandler->redirectToIndex();
+    }
+
+    /**
+     * @return PagerfantaFactory
+     */
+    protected function getPagerfantaFactory()
+    {
+        return new PagerfantaFactory('page', 'paginate');
+    }
+
+    protected function handleView(View $view)
+    {
+        $handler = $this->get('fos_rest.view_handler');
+        $handler->setExclusionStrategyGroups($this->config->getSerializationGroups());
+
+        if ($version = $this->config->getSerializationVersion()) {
+            $handler->setExclusionStrategyVersion($version);
+        }
+
+        return $handler->handle($view);
+    }/**
+     * @return object
+     */
+    public function createNew()
+    {
+        return $this->resourceResolver->createResource($this->getRepository(), 'createNew');
+    }
+
+    /**
+     * @param object|null $resource
+     *
+     * @return FormInterface
+     */
+    public function getForm($resource = null)
+    {
+        if ($this->config->isApiRequest()) {
+            return $this->container->get('form.factory')->createNamed('', $this->config->getFormType(), $resource);
+        }
+
+        return $this->createForm($this->config->getFormType(), $resource);
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $criteria
+     *
+     * @return object
+     *
+     * @throws NotFoundHttpException
+     */
+    public function findOr404(Request $request, array $criteria = array())
+    {
+        if ($request->get('slug')) {
+            $default = array('slug' => $request->get('slug'));
+        } elseif ($request->get('id')) {
+            $default = array('id' => $request->get('id'));
+        } else {
+            $default = array();
+        }
+
+        $criteria = array_merge($default, $criteria);
+
+        if (!$resource = $this->resourceResolver->getResource(
+            $this->getRepository(),
+            'findOneBy',
+            array($this->config->getCriteria($criteria))
+        )) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'Requested %s does not exist with these criteria: %s.',
+                    $this->config->getResourceName(),
+                    json_encode($this->config->getCriteria($criteria))
+                )
+            );
+        }
+
+        return $resource;
+    }
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function getRepository()
+    {
+        return $this->get($this->config->getServiceName('repository'));
+    }
+
+    /**
+     * @param Request $request
+     * @param integer $movement
+     *
+     * @return RedirectResponse
+     */
+    protected function move(Request $request, $movement)
+    {
+        $resource = $this->findOr404($request);
+
+        $this->domainManager->move($resource, $movement);
+
+        return $this->redirectHandler->redirectToIndex();
+    }
+
+    /**
+     * @return PagerfantaFactory
+     */
+    protected function getPagerfantaFactory()
+    {
+        return new PagerfantaFactory('page', 'paginate');
+    }
+
+    protected function handleView(View $view)
+    {
+        $handler = $this->get('fos_rest.view_handler');
+        $handler->setExclusionStrategyGroups($this->config->getSerializationGroups());
+
+        if ($version = $this->config->getSerializationVersion()) {
+            $handler->setExclusionStrategyVersion($version);
+        }
+
+        return $handler->handle($view);
     }
 }

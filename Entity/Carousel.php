@@ -79,6 +79,16 @@ class Carousel extends BaseCarousel
 
         return $this;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function addItem(\Volleyball\Component\Utility\Model\CarouselItem $item)
+    {
+        $this->items[] = $item;
+        
+        return $this;
+    }
 
     /**
      * Has items

@@ -6,10 +6,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Component\Utility\Model\CarouselItem as BaseCarouselItem;
-use Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Component\Utility\Model\CarouselItem as BaseCarouselItem;
+use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
 * @ORM\Entity(repositoryClass="Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository")

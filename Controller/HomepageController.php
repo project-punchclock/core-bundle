@@ -1,24 +1,24 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use \Symfony\Component\HttpFoundation\Request;
 
-use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
-
-class HomepageController extends Controller
+class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
      * @Route("/", name="homepage")
-     * @Template("VolleyballUtilityBundle:Homepage:index.html.twig")
+     * @Template("VolleyballResourceBundle:Homepage:index.html.twig")
      */
     public function indexAction(
-        $dashboard = true
+        Request $request
     ) {
+        
         /**
          * If user is authorized AND user isn't implicitly requesting the welcome pages
          */
-        if ($dashboard && $this->get('security.context')->isGranted('ROLE_USER')) {
+        if ($this->get('security.context')->isGranted('ROLE_USER')) {
             $session = $this->get('security.context');
             
             if ($session->isGranted('ROLE_ADMIN')) {

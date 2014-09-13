@@ -1,11 +1,10 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Kernel;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use ReflectionClass;
+use \Symfony\Component\Config\Loader\LoaderInterface;
+use \ReflectionClass;
 
-abstract class Kernel extends BaseKernel
+abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
 {
     /**
      * {@inheritdoc}
@@ -39,6 +38,8 @@ abstract class Kernel extends BaseKernel
             new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new \WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             
+            new \Sylius\Bundle\ResourceBundle\SyliusResourceBundle(),
+
             new \Volleyball\Bundle\UserBundle\VolleyballUserBundle(),
             new \Volleyball\Bundle\PasselBundle\VolleyballPasselBundle(),
             new \Volleyball\Bundle\OrganizationBundle\VolleyballOrganizationBundle(),
@@ -48,6 +49,7 @@ abstract class Kernel extends BaseKernel
             new \Volleyball\Bundle\ReportBundle\VolleyballReportBundle(),
             new \Volleyball\Bundle\UtilityBundle\VolleyballUtilityBundle(),
             new \Volleyball\Bundle\FixturesBundle\VolleyballFixturesBundle(),
+            new \Volleyball\Bundle\ResourceBundle\VolleyballResourceBundle(),
         );
         
         if (in_array($this->environment, array('dev', 'test'))) {

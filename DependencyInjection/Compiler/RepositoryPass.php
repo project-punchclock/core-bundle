@@ -13,11 +13,17 @@ class RepositoryPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $factory = $container->findDefinition('volleyball.repository.factory');
+        if (!$factory = $container->findDefinition('volleyball.repository.factory')) {
+            return;
+        }
  
-        $repositories = [];
+        $repositories = array();
         foreach ($container->findTaggedServiceIds('volleyball.repository') as $id => $params) {
             foreach ($params as $param) {
+                if ('factory' == $param['alias']) {
+                    continue;
+                }
+                
                 $repositories[$param['class']] = $id;
                 $repository = $container->findDefinition($id);
                 $repository->replaceArgument(0, new Reference('doctrine.orm.default_entity_manager'));
