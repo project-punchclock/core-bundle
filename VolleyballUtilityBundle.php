@@ -1,18 +1,34 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle;
 
-use \Symfony\Component\HttpKernel\Bundle\Bundle;
 use \Symfony\Component\DependencyInjection\ContainerBuilder;
+use \Sylius\Bundle\ResourceBundle\AbstractResourceBundle;
+use \Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 
 use \Volleyball\Bundle\UtilityBundle\DependencyInjection\Compiler\ObjectToIdentifierServicePass;
 
-class VolleyballUtilityBundle extends Bundle
+class VolleyballUtilityBundle extends AbstractResourceBundle
 {
-    const DRIVER_DOCTRINE_ORM         = 'doctrine/orm';
-    const DRIVER_DOCTRINE_MONGODB_ODM = 'doctrine/mongodb-odm';
+    public static function getSupportedDrivers()
+    {
+        return array(
+            SyliusResourceBundle::DRIVER_DOCTRINE_ORM
+        );
+    }
     
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
-//        $container->addCompilerPass(new ObjectToIdentifierServicePass());
+        parent::build($container);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    protected function getBundlePrefix()
+    {
+        return 'volleyball_utility';
     }
 }

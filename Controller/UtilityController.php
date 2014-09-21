@@ -7,6 +7,8 @@ use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use \Symfony\Component\Config\FileLocator;
 use \Symfony\Component\Yaml\Yaml;
 use \Doctrine\Common\Collections\ArrayCollection;
+use \FOS\RestBundle\View\View;
+use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
 
 class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\ResourceController implements ContainerAwareInterface
 {
@@ -15,6 +17,8 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      * @var ArrayCollection
      */
     private $configs;
+    
+    protected $config;
 
     /**
      * config file locator
@@ -46,19 +50,19 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function setContainer(ContainerInterface $container = null)
     {
+        parent::setContainer($container);
+        
         $this->container = $container;
 
         $this->securityContext = $this->container->get('security.context');
         
         $this->generateBreadcrumbs();
-        
-        parent::setContainer($container);
     }
 
     /**
      * __construct
      */
-    public function __construct()
+    public function __construct(Configuration $config)
     {
         $path = __DIR__ .DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
                 DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
@@ -69,6 +73,12 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
         );
         $this->locator = new FileLocator($configDirectories);
 
+        $this->config = $config;
+    }
+
+    public function getConfiguration()
+    {
+        return $this->config;
     }
 
     /**
@@ -79,7 +89,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function getParameter($parameter)
     {
         if (!$this->configs instanceof ArrayCollection) {
-            $this->generateConfigs($file = 'parameters.yml', null, false);
+            $this->generateConfigs('parameters.yml', null, false);
         }
 
         return $this->configs->get($parameter);
@@ -222,106 +232,6 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
             'findOneBy',
             array($this->config->getCriteria($criteria)))
         ) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'Requested %s does not exist with these criteria: %s.',
-                    $this->config->getResourceName(),
-                    json_encode($this->config->getCriteria($criteria))
-                )
-            );
-        }
-
-        return $resource;
-    }
-
-    /**
-     * @return RepositoryInterface
-     */
-    public function getRepository()
-    {
-        return $this->get($this->config->getServiceName('repository'));
-    }
-
-    /**
-     * @param Request $request
-     * @param integer $movement
-     *
-     * @return RedirectResponse
-     */
-    protected function move(Request $request, $movement)
-    {
-        $resource = $this->findOr404($request);
-
-        $this->domainManager->move($resource, $movement);
-
-        return $this->redirectHandler->redirectToIndex();
-    }
-
-    /**
-     * @return PagerfantaFactory
-     */
-    protected function getPagerfantaFactory()
-    {
-        return new PagerfantaFactory('page', 'paginate');
-    }
-
-    protected function handleView(View $view)
-    {
-        $handler = $this->get('fos_rest.view_handler');
-        $handler->setExclusionStrategyGroups($this->config->getSerializationGroups());
-
-        if ($version = $this->config->getSerializationVersion()) {
-            $handler->setExclusionStrategyVersion($version);
-        }
-
-        return $handler->handle($view);
-    }/**
-     * @return object
-     */
-    public function createNew()
-    {
-        return $this->resourceResolver->createResource($this->getRepository(), 'createNew');
-    }
-
-    /**
-     * @param object|null $resource
-     *
-     * @return FormInterface
-     */
-    public function getForm($resource = null)
-    {
-        if ($this->config->isApiRequest()) {
-            return $this->container->get('form.factory')->createNamed('', $this->config->getFormType(), $resource);
-        }
-
-        return $this->createForm($this->config->getFormType(), $resource);
-    }
-
-    /**
-     * @param Request $request
-     * @param array   $criteria
-     *
-     * @return object
-     *
-     * @throws NotFoundHttpException
-     */
-    public function findOr404(Request $request, array $criteria = array())
-    {
-        if ($request->get('slug')) {
-            $default = array('slug' => $request->get('slug'));
-        } elseif ($request->get('id')) {
-            $default = array('id' => $request->get('id'));
-        } else {
-            $default = array();
-        }
-
-        $criteria = array_merge($default, $criteria);
-
-        if (!$resource = $this->resourceResolver->getResource(
-            $this->getRepository(),
-            'findOneBy',
-            array($this->config->getCriteria($criteria))
-        )) {
             throw new NotFoundHttpException(
                 sprintf(
                     'Requested %s does not exist with these criteria: %s.',

@@ -22,7 +22,6 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
             new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             
             new \JMS\AopBundle\JMSAopBundle(),
-            new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new \JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new \JMS\TranslationBundle\JMSTranslationBundle(),
 

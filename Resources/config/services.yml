@@ -51,3 +51,19 @@ services:
             
     volleyball.inflector: 
         class: %volleyball.inflector.class%
+        
+    volleyball.controller.address:
+        class: Volleyball\Bundle\UtilityBundle\Controller\AddressController
+        factory_service: sylius.controller.configuration_factory
+        factory_method: createConfiguration
+        arguments: ["sylius", "address", "VolleyballUtilityBundle:Address"]
+    volleyball.controller.utility:
+        class: Volleyball\Bundle\UtilityBundle\Controller\UtilityController
+        factory_service: sylius.controller.configuration_factory
+        factory_method: createConfiguration
+        arguments: ["sylius", "utility", "VolleyballUtilityBundle:Utility"]
+    volleyball.controller.homepage:
+        class: Volleyball\Bundle\UtilityBundle\Controller\HomepageController
+        factory_service: sylius.controller.configuration_factory
+        factory_method: createConfiguration
+        arguments: ["sylius", "homepage", "VolleyballUtilityBundle:Homepage"]

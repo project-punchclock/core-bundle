@@ -4,21 +4,33 @@ namespace Volleyball\Bundle\UtilityBundle\Controller;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use \Symfony\Component\HttpFoundation\Request;
+use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
+use \Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
+use \Sylius\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage;
 
 class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
+    public function __construct()
+    {
+        //$config = $this->get('sylius.controller.configuration_factory');
+        $parser = new ParametersParser(new ExpressionLanguage());
+        $config = new Configuration(
+            $parser,
+            'volleyball',
+            'carousel',
+            'VolleyballResourceBundle:Homepage:index.html.twig',
+            'twig',
+            array()
+        );
+        parent::__construct($config);
+    }
     /**
      * @Route("/", name="homepage")
      * @Template("VolleyballResourceBundle:Homepage:index.html.twig")
      */
-    public function indexAction(
-        Request $request
-    ) {
-        
-        /**
-         * If user is authorized AND user isn't implicitly requesting the welcome pages
-         */
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
+    public function indexAction(Request $request)
+    {
+        if (!$request->get('homepage', false) && $this->get('security.context')->isGranted('ROLE_USER')) {
             $session = $this->get('security.context');
             
             if ($session->isGranted('ROLE_ADMIN')) {
@@ -28,50 +40,8 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
                 $this->forwardToDashboard(
                     ($session->isGranted(' ROLE_SUPER_ADMIN') ? 'ROLE_SUPER_ADMIN' : 'ROLE_ADMIN')
                 );
-            } elseif ($session->isGranted('ROLE_REGION_USER')) {
-                /**
-                 * Region user
-                 */
-                $this->forwardToDashboard(
-                    ($session->isGranted(' ROLE_REGION_ADMIN') ? 'ROLE_REGION_ADMIN' : 'ROLE_REGION_USER')
-                );
-            } elseif ($session->isGranted('ROLE_ORG_USER')) {
-                /**
-                 * Organization user
-                 */
-                $this->forwardToDashboard(
-                    ($session->isGranted('ROLE_ORG_ADMIN') ? 'ROLE_ORG_ADMIN' : 'ROLE_ORG_USER')
-                );
-            } elseif ($session->isGranted('ROLE_FACILITY_ADMIN')) {
-                /**
-                 * Faculty
-                 */
-                $this->forwardToDashboard(
-                    (
-                        $session->isGranted(' ROLE_FACILITY_ADMIN') ?
-                        'ROLE_FACILITY_ADMIN' :
-                        (
-                            $session->isGranted('ROLE_FACILITY_FACULTY') ?
-                            'ROLE_FACILITY_FACULTY' :
-                            'ROLE_FACILITY_USER'
-                        )
-                    )
-                );
-            } elseif ($session->isGranted('ROLE_PASSEL_USER')) {
-                /**
-                 * Leader or Attendee user
-                 */
-                $this->forwardToDashboard(
-                    (
-                        $session->isGranted(' ROLE_PASSEL_ADMIN') ?
-                        'ROLE_PASSEL_ADMIN' :
-                        (
-                            $session->isGranted('ROLE_PASSEL_LEADER') ?
-                            'ROLE_PASSEL_LEADER' :
-                            'ROLE_PASSEL_USER'
-                        )
-                    )
-                );
+            } else {
+                $this->forwardToDashboard('ROLE_USER');
             }
         }
         
