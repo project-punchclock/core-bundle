@@ -1,16 +1,24 @@
 /* Columns */
-
-.home-columns {
-    margin-bottom: 20px;
+.feature-row {
+    margin-top: 10px;
 }
 
-.home-columns i {
-    font-size: 64px;
-    margin: 15px 20px 60px 0;
-    color: #CCC;
+.feature-row i {
+    display: block; 
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
 }
 
-.home-columns h2 {
-    color: #3B3B3B;
-    margin-bottom: 0;
+.feature-row h2 {
+    font-size: 28px;
+    padding-bottom: 40px;
 }
+
+.feature-row h4 {
+    font-family: "Titillum Web", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+i { font-size: 80px; }

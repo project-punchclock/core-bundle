@@ -8,6 +8,8 @@ use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
 use \Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
 use \Sylius\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage;
 
+use \Volleyball\Bundle\ResourceBundle\Form\Type\ContactFormType;
+
 class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     public function __construct()
@@ -24,6 +26,7 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         );
         parent::__construct($config);
     }
+    
     /**
      * @Route("/", name="homepage")
      * @Template("VolleyballResourceBundle:Homepage:index.html.twig")
@@ -31,29 +34,28 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     public function indexAction(Request $request)
     {
         if (!$request->get('homepage', false) && $this->get('security.context')->isGranted('ROLE_USER')) {
-            $session = $this->get('security.context');
-            
-            if ($session->isGranted('ROLE_ADMIN')) {
-                /**
-                 * Admin user
-                 */
-                $this->forwardToDashboard(
-                    ($session->isGranted(' ROLE_SUPER_ADMIN') ? 'ROLE_SUPER_ADMIN' : 'ROLE_ADMIN')
-                );
-            } else {
-                $this->forwardToDashboard('ROLE_USER');
-            }
+            $this->forward('VolleyballUserBundle:Dashboard:index');
         }
         
         /*
          * If anonymous user OR dashboard was not implicitly requested
          */
         // Carousel
-        $carousel = $this->get('doctrine')->getRepository('VolleyballUtilityBundle:Carousel')
+        $carousel = $this->get('volleyball.repository.carousel')
             ->findOneBySlug('splash');
     
         if (!$carousel) {
-            $carousel = array('items' => array());
+            $carousel = $this->get('volleyball.repository.carousel')->createNew();
+            $carousel->setName('splash');
+            
+            for ($i = 1; $i < 4; $i++) {
+                $item = $this->get('volleyball.repository.carousel_item')->createNew();
+                $item
+                    ->setName('item '.$i)
+                    ->setCaption('item '.$i)
+                    ->setImage('/bundles/volleyballresource/images/carousel/item'.$i.'.jpg');
+                $carousel->addItem($item);
+            }
         }
 
         // last username entered by the user
@@ -74,58 +76,59 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
 
     /**
      * @Route("/about", name="volleyball_about")
-     * @return type
+     * @Template("VolleyballResourceBundle:Homepage:about.html.twig")
      */
     public function aboutAction()
     {
-        return $this->render('VolleyballUtilityBundle:Homepage:about.html.twig');
+        return array();
     }
 
     /**
      * @Route("/help", name="volleyball_help")
-     * @return type
+     * @Template("VolleyballResourceBundle:Homepage:help.html.twig")
      */
     public function helpAction()
     {
-        return $this->render('VolleyballUtilityBundle:Homepage:help.html.twig');
+        return array();
     }
 
     /**
      * @Route("/contact", name="volleyball_contact")
-     * @return type
+     * @Template("VolleyballResourceBundle:Homepage:contact.html.twig")
      */
-    public function contactAction()
+    public function contactAction(Request $request)
     {
-        return $this->render('VolleyballUtilityBundle:Homepage:contact.html.twig');
-    }
-    
-    /**
-     * Forward to dashboard
-     * 
-     * @param string $role role
-     */
-    private function forwardToDashboard($role)
-    {
-        /**
-         * @todo find a cleaner way to match the role to the controller
-         *
-         * $roles = Yaml::parse($this->locator->locate('security.yml', null, null));
-         * $roles = new ArrayCollection($roles['security']['role_hierarchy']);
-         */
-        $roleEntities = array(
-            'ROLE_PASSEL_USER'          =>  'VolleyballPasselBundle:Attendee:dashboard',
-            'ROLE_PASSEL_LEADER'        =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_PASSEL_ADMIN'         =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_FACILITY_USER'        =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_FACULTY'     =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_ADMIN'       =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_ORG_USER'             =>  'VolleyballOrganizationBundle:Organization:dashboard',
-            'ROLE_ORG_ADMIN'            =>  'VolleyballOrganizationBundle:Organization:dashboard',
-            'ROLE_REGION_USER'          =>  'VolleyballOrganizationBundle:Region:dashboard',
-            'ROLE_REGION_ADMIN'         =>  'VolleyballOrganizationBundle:Region:dashboard',
-            'ROLE_ADMIN'                =>  'VolleyballUserBundle:Admin:dashboard',
-            'ROLE_SUPER_ADMIN'          =>  'VolleyballUserBundle:Admin:dashboard'
+        $form = $this->createForm(new ContactFormType());
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($form->get('subject')->getData())
+                    ->setFrom($form->get('email')->getData())
+                    ->setTo('volleyball@daviddurost.net')
+                    ->setBody(
+                        $this->renderView(
+                            'VolleyballResourceBundle:Homepage:contact.html.php',
+                            array(
+                                'ip' => $request->getClientIp(),
+                                'name' => $form->get('name')->getData(),
+                                'message' => $form->get('message')->getData()
+                            )
+                        )
+                    );
+
+                $this->get('mailer')->send($message);
+
+                $request->getSession()->getFlashBag()->add('success', 'Your email has been sent.');
+
+                return $this->redirect($this->generateUrl('volleyball_contact'));
+            }
+        }
+
+        return array(
+            'form' => $form->createView()
         );
-        $this->forward($roleEntities[$role]);
     }
 }

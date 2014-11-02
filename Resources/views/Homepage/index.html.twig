@@ -9,7 +9,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('/bundles/Volleyballutility/js/Volleyball.js') }}" type="text/javascript" ></script>
 {% endblock %}
 
 {% block content %}
@@ -35,7 +34,7 @@
                     <p>
                         <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="pull-left"/>
                         <label for="remember_me"> {{ 'remember me' | title }}</label>
-                        <input type="submit" id="_submit" name="_submit" value="sign in &raquo;" class="greenButton" class="pull-right"/>
+                        <input type="submit" id="_submit" name="_submit" value="sign in &raquo;" class="greenButton pull-right"/>
                     </p>
                 </form>
             </div>
@@ -64,34 +63,52 @@
         </div>
         {% endblock %}
     </div>
-    <div class="row">
+    <div class="row feature-row">
         {% block home_cols %}
-        <div class="span12">
-            <div class="row home-columns">
-                <div class="span4 home-column clearfix">
-                    <i class="fa fa-th pull-left"></i>
-                    <div class="content">
-                        <h2>Multi-Facility Interface</h2>
-                        <p>blah blah blah blah blah!</p>
-                    </div>
-                </div>
-                <div class="span4 home-column clearfix">
-                    <i class="fa fa-print pull-left"></i>
-                    <div class="content">
-                        <h2>Point And Print Reports</h2>
-                        <p>blah blah blah blah blah!</p>
-                    </div>
-                </div>
-                <div class="span4 home-column clearfix">
-                    <i class="fa fa-desktop pull-left"></i>
-                    <div class="content">
-                        <h2>User Portals</h2>
-                        <p>blah blah blah blah blah!</p>
-                    </div>
-                </div>
-            </div>      
+        <!-- Multi-FacilityInterface //-->
+        <div class="col-12 col-lg-3 col-sm-6">
+            <p>
+                <i class="fa fa-th"></i>
+            </p>
+            <h2 class="font-thin">
+                Multi-Facility
+                <span class="font-semibold">Interface</span>
+            </h2>
+            <h4 class="font-thin">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </h4>
+        </div>
+        
+        <!-- Print Reports //-->
+        <div class="col-12 col-lg-3 col-sm-6">
+            <p>
+                <i class="fa fa-print fa-5x"></i>
+            </p>
+            <h2 class="font-thin">
+                Print
+                <span class="font-semibold">Reports</span>
+            </h2>
+            <h4 class="font-thin">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </h4>
+        </div>
+        
+        <!-- User Portals //-->
+        <div class="col-12 col-lg-3 col-sm-6">
+            <p>
+                <i class="fa fa-desktop"></i>
+            </p>
+            <h2 class="font-thin">
+                User
+                <span class="font-semibold">Portals</span>
+            </h2>
+            <h4 class="font-thin">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </h4>
         </div>
         {% endblock %}
     </div>
 </div>
 {% endblock %}
+
+{% block breadcrumbs %} {% endblock %}

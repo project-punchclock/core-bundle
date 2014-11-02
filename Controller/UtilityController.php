@@ -115,12 +115,13 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     {
         $this->breadcrumbs = $this->get('white_october_breadcrumbs');
         
-        $this->breadcrumbs->addItem(
-            'dashboard',
-            $this->get('router')->generate('homepage')
-        );
+        if ($this->securityContext->isGranted('ROLE_USER')) {
+            $this->breadcumbs->addItem(
+                $this->securityContext->getUser()->getUsername(),
+                $this->get('router')->generate('homepage')
+            );
+        }
     }
-    
     
     /**
      * @inheritdoc

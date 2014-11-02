@@ -1,10 +1,11 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Kernel;
 
+use \Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use \Symfony\Component\Config\Loader\LoaderInterface;
 use \ReflectionClass;
 
-abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
+abstract class Kernel extends BaseKernel
 {
     /**
      * {@inheritdoc}
