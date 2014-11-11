@@ -131,4 +131,33 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
             'form' => $form->createView()
         );
     }
+    
+    /**
+     * @Template("VolleyballResourceBundle:Base:registration.html.twig")
+     */
+    public function registerAction(Request $request)
+    {
+        return array(
+                'items' => array(
+                    array(
+                        'label' => 'leader',
+                        'route' => 'volleyball_leader_register',
+                        'icon'  =>  '<i class="fa fa-group fa-lg"></i>',
+                        'caption' => 'Passel leaders signup here to get instant access to managing and maintaining your passel\'s statitcs.'
+                    ),
+                    array(
+                        'label' => 'attendee',
+                        'route' => 'volleyball_attendee_register',
+                        'icon'  =>  '<i class="fa fa-user fa-lg"></i>',
+                        'caption' => 'Attendees signup here to get instant access to managing and maintaining your statitcs.'
+                    ),
+                    array(
+                        'label' => 'faculty',
+                        'route' => 'volleyball_faculty_register',
+                        'icon'  =>  '<i class="fa fa-male fa-lg"></i>',
+                        'caption' => 'Faculty members signup here to get instant access to managing and maintaining your personal and class information.'
+                    )
+                )
+            );
+    }
 }

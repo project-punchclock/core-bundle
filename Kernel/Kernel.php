@@ -25,7 +25,9 @@ abstract class Kernel extends BaseKernel
             new \JMS\AopBundle\JMSAopBundle(),
             new \JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new \JMS\TranslationBundle\JMSTranslationBundle(),
+            new \JMS\SerializerBundle\JMSSerializerBundle(),
 
+            new \FOS\RestBundle\FOSRestBundle(),
             new \FOS\UserBundle\FOSUserBundle(),
             new \PUGX\MultiUserBundle\PUGXMultiUserBundle(),
             

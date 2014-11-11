@@ -1,10 +1,10 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 use \Volleyball\Component\Utility\Model\CarouselItem as BaseCarouselItem;
 use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
@@ -34,6 +34,37 @@ class CarouselItem extends BaseCarouselItem
     protected $name;
     
     /**
+     * @ORM\Column(type="string")
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "30",
+     *      minMessage = "Caption must be at least {{ limit }} characters length",
+     *      maxMessage = "Caption cannot be longer than {{ limit }} characters length"
+     * )
+     * @var string
+     */
+    protected $caption;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\Url()
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "30",
+     *      minMessage = "Caption must be at least {{ limit }} characters length",
+     *      maxMessage = "Caption cannot be longer than {{ limit }} characters length"
+     * )
+     * @var string
+     */
+    protected $image;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\UtilityBundle\Entity\Carousel", inversedBy="carousel_items")
+     * @ORM\JoinColumn(name="carousel_id", referencedColumnName="id")
+     */
+    protected $carousel;
+    
+    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -50,18 +81,6 @@ class CarouselItem extends BaseCarouselItem
         
         return $this;
     }
-
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(
-     *      min = "1",
-     *      max = "30",
-     *      minMessage = "Caption must be at least {{ limit }} characters length",
-     *      maxMessage = "Caption cannot be longer than {{ limit }} characters length"
-     * )
-     * @var string
-     */
-    protected $caption;
 
     /**
      * Get caption
@@ -88,19 +107,6 @@ class CarouselItem extends BaseCarouselItem
     }
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\Url()
-     * @Assert\Length(
-     *      min = "1",
-     *      max = "30",
-     *      minMessage = "Caption must be at least {{ limit }} characters length",
-     *      maxMessage = "Caption cannot be longer than {{ limit }} characters length"
-     * )
-     * @var string
-     */
-    protected $image;
-
-    /**
      * Get image
      * 
      * @return string
@@ -121,6 +127,27 @@ class CarouselItem extends BaseCarouselItem
     {
         $this->image = $image;
 
+        return $this;
+    }
+    
+    /**
+     * Get carousel
+     * @return \Volleyball\Bundle\UtilityBundle\Entity\Carousel
+     */
+    public function getCarousel()
+    {
+        return $this->carousel;
+    }
+    
+    /**
+     * Set carousel
+     * @param \Volleyball\Bundle\UtilityBundle\Entity\Carousel $carousel
+     * @return \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem
+     */
+    public function setCarousel(\Volleyball\Bundle\UtilityBundle\Entity\Carousel $carousel)
+    {
+        $this->carousel = $carousel;
+        
         return $this;
     }
 }

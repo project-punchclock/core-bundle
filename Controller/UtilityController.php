@@ -9,6 +9,8 @@ use \Symfony\Component\Yaml\Yaml;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \FOS\RestBundle\View\View;
 use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
+use \Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
+use \Sylius\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage;
 
 class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\ResourceController implements ContainerAwareInterface
 {
@@ -62,8 +64,21 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     /**
      * __construct
      */
-    public function __construct(Configuration $config)
+    public function __construct(Configuration $config = null)
     {
+        if (null == $config) {
+            $parser = new ParametersParser(new ExpressionLanguage());
+            $config = new Configuration(
+                $parser,
+                'volleyball',
+                'user',
+                'VolleyballResourceBundle:Base',
+                'twig',
+                array('sortable' => true, 'filterable' => true, 'paginate' => true, 'default_page_size' => 10)
+            );
+        }
+        parent::__construct($config);
+        
         $path = __DIR__ .DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
                 DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                 'app' . DIRECTORY_SEPARATOR;
@@ -128,8 +143,8 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function indexAction(Request $request)
     {
-        list($class, $tmp) = explode('Controller', class_name($this), 1);
-        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        list($class, $tmp) = explode('Controller', get_class($this));
+        $this->breadcrumbs->addItem($this->get('volleyball.inflector')->pluralize($class));
         
         return parent::indexAction($request);
     }
@@ -139,7 +154,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function showAction(Request $request)
     {
-        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        list($class, $tmp) = explode('Controller', get_class($this), 1);
         $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
         $this->breadcrumbs->add('show');
         
@@ -152,7 +167,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function createAction(Request $request)
     {
-        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        list($class, $tmp) = explode('Controller', get_class($this), 1);
         $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
         $this->breadcrumbs->add('new');
         
@@ -165,7 +180,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function updateAction(Request $request)
     {
-        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        list($class, $tmp) = explode('Controller', get_class($this), 1);
         $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
         $this->breadcrumbs->add('update');
         
@@ -178,7 +193,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
      */
     public function deleteAction(Request $request)
     {
-        list($class, $tmp) = explode('Controller', class_name($this), 1);
+        list($class, $tmp) = explode('Controller', get_class($this), 1);
         $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
         $this->breadcrumbs->add('delete');
         
@@ -231,7 +246,8 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
         if (!$resource = $this->resourceResolver->getResource(
             $this->getRepository(),
             'findOneBy',
-            array($this->config->getCriteria($criteria)))
+            array($this->config->getCriteria($criteria))
+        )
         ) {
             throw new NotFoundHttpException(
                 sprintf(

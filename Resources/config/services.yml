@@ -6,20 +6,9 @@ parameters:
     volleyball.menu.nonauth.class: Knp\Menu\MenuItem
     volleyball.menu.voter.request.class: Volleyball\Bundle\UtilityBundle\Menu\RequestVoter
     
-    volleyball.repository.factory_service: doctrine.orm.default_entity_manager
-    volleyball.repository.factory.class: Volleyball\Component\Utility\Repository\RepositoryFactory
-    volleyball.repository.factory.default.class: Volleyball\Component\Utility\Repository\RepositoryFactory
-    
-    volleyball.repository.address.class: Volleyball\Bundle\UtilityBundle\Repository\AddressRepository
-    volleyball.repository.address.entity: Volleyball\Bundle\UtilityBundle\Entity\Address
-    
-    volleyball.repository.carousel.class: Volleyball\Bundle\UtilityBundle\Repository\CarouselRepository
-    volleyball.repository.carousel.entity: Volleyball\Bundle\UtilityBundle\Entity\Carousel
-    
-    volleyball.repository.carousel_item.class: Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository
-    volleyball.repository.carousel_item.entity: Volleyball\Bundle\UtilityBundle\Entity\CarouselItem
-    
     volleyball.inflector.class: Volleyball\Component\Utility\Inflector\Inflector
+    
+    volleyball.controller.utility.class: Volleyball\Bundle\UtilityBundle\Controller\UtilityController
         
 services:
     volleyball.listener.utility:
@@ -51,19 +40,7 @@ services:
             
     volleyball.inflector: 
         class: %volleyball.inflector.class%
-        
-    volleyball.controller.address:
-        class: Volleyball\Bundle\UtilityBundle\Controller\AddressController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "address", "VolleyballUtilityBundle:Address"]
+    
     volleyball.controller.utility:
-        class: Volleyball\Bundle\UtilityBundle\Controller\UtilityController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "utility", "VolleyballUtilityBundle:Utility"]
-    volleyball.controller.homepage:
-        class: Volleyball\Bundle\UtilityBundle\Controller\HomepageController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "homepage", "VolleyballUtilityBundle:Homepage"]
+        class: "%volleyball.controller.utility.class%"
+        arguments: [ "@sylius.controller.configuration_factory" ]
