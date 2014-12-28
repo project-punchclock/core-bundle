@@ -1,22 +1,21 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Component\Utility\Model\Carousel as BaseCarousel;
-use Volleyball\Bundle\UtilityBundle\Entity\CarouselItem;
-use Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem;
+use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\UtilityBundle\Repository\CarouselRepository")
  * @ORM\Table(name="carousel")
  */
-class Carousel extends BaseCarousel
+class Carousel
 {
     use EntityBootstrapTrait;
     use SluggableTrait;
