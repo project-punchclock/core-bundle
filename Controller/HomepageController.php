@@ -4,6 +4,7 @@ namespace Volleyball\Bundle\UtilityBundle\Controller;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\Security\Core\SecurityContextInterface;
 use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
 use \Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
 use \Sylius\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage;
@@ -33,8 +34,8 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
      */
     public function indexAction(Request $request)
     {
-        if (!$request->get('homepage', false) && $this->get('security.context')->isGranted('ROLE_USER')) {
-            $this->forward('VolleyballUserBundle:Dashboard:index');
+        if ($this->get('security.context')->isGranted('ROLE_USER')) {
+            return $this->redirect($this->generateUrl('dashboard'));
         }
         
         /*
@@ -59,9 +60,7 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         }
 
         // last username entered by the user
-        $lastUsername = (!$this->securityContext->isGranted('ROLE_USER')) ?
-                '' :
-                $this->securityContext->get(SecurityContext::LAST_USERNAME);
+        $lastUsername = (null === $request->getSession()) ? '' : $request->getSession()->get(SecurityContextInterface::LAST_USERNAME);
 
         $csrfToken = $this->container->has('form.csrf_provider')
             ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
@@ -70,7 +69,8 @@ class HomepageController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         return array(
             'carousel' => $carousel,
             'csrf_token' => $csrfToken,
-            'last_username' => $lastUsername
+            'last_username' => $lastUsername,
+            'error' => ''
         );
     }
 

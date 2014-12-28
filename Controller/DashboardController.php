@@ -1,60 +1,31 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Controller;
 
+use \Symfony\Component\HttpFoundation\Request;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use \Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
-    protected $roleEntities= array(
-            'ROLE_PASSEL_USER'          =>  'VolleyballPasselBundle:Attendee:dashboard',
-            'ROLE_PASSEL_LEADER'        =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_PASSEL_ADMIN'         =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_FACILITY_USER'        =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_FACULTY'     =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_ADMIN'       =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_ADMIN'                =>  'VolleyballUserBundle:Admin:dashboard',
-            'ROLE_SUPER_ADMIN'          =>  'VolleyballUserBundle:Admin:dashboard'
-        );
-    
-    public function indexAction(Request $request)
-    {
-        $arr = array_reverse($this->roleEntities, true);
-        foreach ($arr as $role => $path) {
-            if ($this->securityContext->isGranted($role)) {
-                $this->forward($path)
-            }
-        }
-        $this->forward(
-            'VolleyballUtilityBundle:Homepage:index',
-            array('homepage' => true)
-        );
-    }
-    
     /**
-     * Forward to dashboard
-     * 
-     * @param string $role role
+     * @Route("/dashboard", name="dashboard")
+     * @Template("VolleyballResourceBundle:Dashboard:index.html.twig")
+     * @param Request $request
      */
-    private function forwardToDashboard($role)
+    public function dashboardAction(Request $request)
     {
-        /**
-         * @todo find a cleaner way to match the role to the controller
-         *
-         * $roles = Yaml::parse($this->locator->locate('security.yml', null, null));
-         * $roles = new ArrayCollection($roles['security']['role_hierarchy']);
-         */
-        $this->roleEntities = array(
-            'ROLE_PASSEL_USER'          =>  'VolleyballPasselBundle:Attendee:dashboard',
-            'ROLE_PASSEL_LEADER'        =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_PASSEL_ADMIN'         =>  'VolleyballPasselBundle:Leader:dasboard',
-            'ROLE_FACILITY_USER'        =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_FACULTY'     =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_FACILITY_ADMIN'       =>  'VolleyballFacilityBundle:Faculty:dashboard',
-            'ROLE_ADMIN'                =>  'VolleyballUserBundle:Admin:dashboard',
-            'ROLE_SUPER_ADMIN'          =>  'VolleyballUserBundle:Admin:dashboard'
+        if (!$this->securityContext->isGranted('ROLE_USER')) {
+            return $this->forward('VolleyballUtilityBundle:Homepage:index');
+        }
+        
+        $widgets = $this
+                ->get('volleyball.dashboard.widget_manager')
+                ->getWidgets();
+                //->getUserWidgets($this->securityContext->getToken()->getUser());
+                
+        return array(
+            'widgets' => $widgets,
+            'id' => $request->query->get('segment', null)
         );
-        $this->forward($this->roleEntities[$role]);
     }
 }

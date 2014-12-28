@@ -9,10 +9,6 @@ trait EntityBootstrapTrait
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     
-    protected $name;
     
     /**
      * Get id

@@ -58,7 +58,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
 
         $this->securityContext = $this->container->get('security.context');
         
-        $this->generateBreadcrumbs();
+        $this->generateBreadcrumbs($this->securityContext);
     }
 
     /**
@@ -126,13 +126,13 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     /**
      * Generate breadcrumbs
      */
-    public function generateBreadcrumbs()
+    public function generateBreadcrumbs(\Symfony\Component\Security\Core\SecurityContext $securityContext = null)
     {
         $this->breadcrumbs = $this->get('white_october_breadcrumbs');
         
-        if ($this->securityContext->isGranted('ROLE_USER')) {
-            $this->breadcumbs->addItem(
-                $this->securityContext->getUser()->getUsername(),
+        if ($securityContext->isGranted('ROLE_USER')) {
+            $this->breadcrumbs->addItem(
+                $securityContext->getToken()->getUser()->getUsername(),
                 $this->get('router')->generate('homepage')
             );
         }

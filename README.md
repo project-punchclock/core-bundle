@@ -3,8 +3,8 @@
 This is a bundle utilizing the utility component of the Volleyball Scheduling system.
 
 ###Controllers
-- Address Controller
-- Homepage Controller
+- AddressController
+- HomepageController
 - UtilityController
 
 ###Entities
@@ -25,6 +25,20 @@ This is a bundle utilizing the utility component of the Volleyball Scheduling sy
 - FacultyMenuBuilder
 - LeaderMenuBuilder
 - MenuBuilder
+
+###Routes
+Name | Path | Parameters
+--- | --- | ---
+dashboard | /dashboard |
+homepage | / | 
+volleyball_about | /about | 
+volleyball_address_edit | /addresses/{slug}/edit | Address.slug
+volleyball_address_show | /addresses/{slug} | Address.slug
+volleyball_contact | /contact | 
+volleyball_help | /help | 
+
+###Services
+
 
 ###Traits
 - BlameableTrait

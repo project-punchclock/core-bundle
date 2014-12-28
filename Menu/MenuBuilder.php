@@ -1,12 +1,24 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Menu;
 
-use Symfony\Component\HttpFoundation\Request;
+use \Knp\Menu\FactoryInterface;
+use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\Translation\TranslatorInterface;
+use \Symfony\Component\Security\Core\SecurityContextInterface;
+use \Symfony\Component\ExpressionLanguage\Expression;
 
 use Volleyball\Bundle\UtilityBundle\Menu\BaseBuilder;
 
 class MenuBuilder extends BaseBuilder
 {
+    public function __construct(
+        FactoryInterface $factory,
+        SecurityContextInterface $securityContext,
+        TranslatorInterface $translator
+    ) {
+        parent::__construct($factory, $securityContext, $translator);
+    }
+    
     /**
      * Navigation menu for a non auth'd user (guest)
      *
@@ -80,30 +92,28 @@ class MenuBuilder extends BaseBuilder
              * Organizations
              */
             $menu->addChild('organizations')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
             $menu['organizations']->addChild(
                 'list organizations',
-                array('route' => 'scss_organization_index')
+                array('route' => 'volleyball_organization_index')
             );
             $menu['organizations']->addChild(
                 'add an organization',
-                array('route' => 'scss_organization_new')
+                array('route' => 'volleyball_organization_new')
             );
 
             /**
              * Passels
              */
             $menu->addChild('passels')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
             $menu['passels']->addChild(
                 'list passels',
-                array('route' => 'scss_passel_index')
+                array('route' => 'volleyball_passel_index')
             );
             $menu['passels']->addChild(
                 'add a passel',
-                array('route' => 'scss_passel_new')
+                array('route' => 'volleyball_passel_new')
             );
 
             /**
@@ -114,11 +124,11 @@ class MenuBuilder extends BaseBuilder
                 ->setAttribute('icon', 'icon-user');
             $menu['facilities']->addChild(
                 'list facilities',
-                array('route' => 'scss_facility_index')
+                array('route' => 'volleyball_facility_index')
             );
             $menu['facilities']->addChild(
                 'add a facility',
-                array('route' => 'scss_facility_new')
+                array('route' => 'volleyball_facility_new')
             );
         } elseif ($this->securityContext->isGranted('ROLE_ORG_USER')) {
             /////////////////////////////////////////////////////////
@@ -129,38 +139,41 @@ class MenuBuilder extends BaseBuilder
              * Organization Management
              */
             $menu->addChild('organization management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['organization management']->addChild(
                 'councils',
                 array(
-                    'route' => 'scss_council_by_organization_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
+                    'route' => 'volleyball_council_by_organization_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
                 )
             );
 
             $menu['organization management']->addChild(
                 'regions',
                 array(
-                    'route' => 'scss_region_by_organization_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
+                    'route' => 'volleyball_region_by_organization_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
                 )
             );
 
             $menu['organization management']->addChild(
                 'facilities',
                 array(
-                    'route' => 'scss_facility_by_organization_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
+                    'route' => 'volleyball_facility_by_organization_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
                 )
             );
 
             $menu['organization management']->addChild(
                 'passels',
                 array(
-                    'route' => 'scss_passel_by_organization_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
+                    'route' => 'volleyball_passel_by_organization_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getOrganization()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_COUNCIL_USER')) {
@@ -172,30 +185,32 @@ class MenuBuilder extends BaseBuilder
              * Council Management
              */
             $menu->addChild('council management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['council management']->addChild(
                 'regions',
                 array(
-                    'route' => 'scss_region_by_council_index',
-                    'routeParameters' => array('alug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
+                    'route' => 'volleyball_region_by_council_index',
+                    'routeParameters' =>
+                        array('alug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
                 )
             );
 
             $menu['council management']->addChild(
                 'facilities',
                 array(
-                    'route' => 'scss_facility_by_council_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
+                    'route' => 'volleyball_facility_by_council_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
                 )
             );
             
             $menu['council management']->addChild(
                 'passels',
                 array(
-                    'route' => 'scss_passel_by_council_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
+                    'route' => 'volleyball_passel_by_council_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getCouncil()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_REGION_USER')) {
@@ -207,22 +222,23 @@ class MenuBuilder extends BaseBuilder
              * Region Management
              */
             $menu->addChild('region management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['region management']->addChild(
                 'facilities',
                 array(
-                    'route' => 'scss_facility_by_region_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getRegion()->getSlug())
+                    'route' => 'volleyball_facility_by_region_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getRegion()->getSlug())
                 )
             );
             
             $menu['region management']->addChild(
                 'passels',
                 array(
-                    'route' => 'scss_passel_by_region_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getRegion()->getSlug())
+                    'route' => 'volleyball_passel_by_region_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getRegion()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_FACILITY_ADMIN')) {
@@ -234,22 +250,23 @@ class MenuBuilder extends BaseBuilder
              * Facility Management
              */
             $menu->addChild('facility management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['facility management']->addChild(
                 'quarters',
                 array(
-                    'route' => 'scss_quarters_by_facility_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getFacility()->getSlug())
+                    'route' => 'volleyball_quarters_by_facility_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getFacility()->getSlug())
                 )
             );
             
             $menu['facility management']->addChild(
                 'faculty',
                 array(
-                    'route' => 'scss_faculty_by_facility_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getFacility()->getSlug())
+                    'route' => 'volleyball_faculty_by_facility_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getFacility()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_FACILITY_FACULTY')) {
@@ -261,14 +278,13 @@ class MenuBuilder extends BaseBuilder
              * Faculty Management
              */
             $menu->addChild('class management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['class management']->addChild(
                 'record attendence',
                 array(
-                    'route' => 'scss_class_attendence',
-                    'routeParameters' => array('slug' => $this->securityContext->getSlug())
+                    'route' => 'volleyball_class_attendence',
+                    'routeParameters' => array('slug' => $this->securityContext->getToken()->getUser()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_PASSEL_ADMIN')) {
@@ -280,22 +296,23 @@ class MenuBuilder extends BaseBuilder
              * Passel Management
              */
             $menu->addChild('passel management')
-                ->setAttribute('dropdown', true)
-                ->setAttribute('icon', 'icon-user');
+                ->setAttribute('dropdown', true);
 
             $menu['passel management']->addChild(
                 'factions',
                 array(
-                    'route' => 'scss_faction_by_passel_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getPassel()->getSlug())
+                    'route' => 'volleyball_faction_by_passel_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getPassel()->getSlug())
                 )
             );
             
             $menu['passel management']->addChild(
                 'attendees',
                 array(
-                    'route' => 'scss_attendee_by_passel_index',
-                    'routeParameters' => array('slug' => $this->securityContext->getActiveEnrollment()->getPassel()->getSlug())
+                    'route' => 'volleyball_attendee_by_passel_index',
+                    'routeParameters' =>
+                        array('slug' => $this->securityContext->getActiveEnrollment()->getPassel()->getSlug())
                 )
             );
         } elseif ($this->securityContext->isGranted('ROLE_PASSEL_USER')) {
@@ -335,8 +352,7 @@ class MenuBuilder extends BaseBuilder
     public function courseMenu(Request $request)
     {
         $menu = $this->factory->createItem('courses');
-        $menu->setAttribute('dropdown', true)
-            ->setAttribute('icon', 'icon-list-alt');
+        $menu->setAttribute('dropdown', true);
         
         // course index
         $menu->addChild(
@@ -384,8 +400,7 @@ class MenuBuilder extends BaseBuilder
     public function facilityMenu(Request $request)
     {
         $menu = $this->factory->createItem('facilities')
-            ->setAttribute('dropdown', true)
-            ->setAttribute('icon', 'icon-user');
+            ->setAttribute('dropdown', true);
 
         // facility index
         $menu->addChild(
@@ -423,8 +438,12 @@ class MenuBuilder extends BaseBuilder
     public function reportMenu(Request $request)
     {
         $menu = $this->factory->createItem('reports')
-            ->setAttribute('dropdown', true)
-            ->setAttribute('icon', 'icon-user');
+            ->setAttribute('dropdown', true);
+        
+        $menu->addChild(
+            'add a report',
+            array('route' => 'homepage')
+        );
 
         return $menu;
     }
@@ -436,15 +455,14 @@ class MenuBuilder extends BaseBuilder
     public function profileMenu(Request $request)
     {
         $menu = $this->factory->createItem('profile')
-            ->setAttribute('dropdown', true)
-            ->setAttribute('icon', 'icon-user');
+            ->setAttribute('dropdown', true);
 
         $menu->addChild(
             'view profile',
             array(
                 'route' => 'fos_user_profile_show',
                 'routeParameters' => array(
-                    'slug' => $this->securityContext->getSlug()
+                    'slug' => $this->securityContext->getToken()->getUser()->getSlug()
                 )
             )
         );
@@ -454,7 +472,7 @@ class MenuBuilder extends BaseBuilder
             array(
                 'route' => 'fos_user_profile_edit',
                 'routeParameters' => array(
-                    'slug' => $this->securityContext->getSlug()
+                    'slug' => $this->securityContext->getToken()->getUser()->getSlug()
                 )
             )
         );
@@ -463,6 +481,8 @@ class MenuBuilder extends BaseBuilder
             'change password',
             array('route' => 'fos_user_change_password')
         );
+        
+        return $menu;
     }
 
     /**
@@ -473,63 +493,60 @@ class MenuBuilder extends BaseBuilder
     {
         $enrollment = $this->securityContext->getToken()->getUser()->getActiveEnrollment();
 
-        $label = array(
-            $this->securityContext->getUsername().' @ '.
-            $enrollment->getName().' - '.
-            $enrollment->getWeek()->getShortName(),
-            $enrollment->getRegion()->getCode().
-            $enrollment->getPassel()->getName().' @ '.
-            $enrollment->getFacility()->getName(). ' - '.
-            $enrollment->getWeek()->GetShortName()
-        );
+//        $label = array(
+//            $this->securityContext->getToken()->getUser()->getUsername().' @ '.
+//            $enrollment->getWeek()->getShortName(),
+//            $enrollment->getRegion()->getCode().
+//            $enrollment->getPassel()->getName().' @ '.
+//            $enrollment->getFacility()->getName(). ' - '.
+//            $enrollment->getWeek()->GetShortName()
+//        );
+        $label = array($this->securityContext->getToken()->getUser()->getUsername());
 
         // Generate menu with corresponding label
-        if ($this->securityContext->isGranted(
-            new Expression('"ROLE_PASSEL_ADMIN" or "ROLE_PASSEL_LEADER" or "ROLE_PASSEL_USER" in roles')
-        )) {
-            $menu = $this->factory->createItem($label[1]);
+        if ($this->securityContext->isGranted(array('ROLE_PASSEL_ADMIN', 'ROLE_PASSEL_LEADER', 'ROLE_PASSEL_USER'))) {
+            $menu = $this->factory->createItem($label[0]);
         } else {
             $menu = $this->factory->createItem($label[0]);
         }
-        $menu->setAttribute('dropdown', true)
-            ->setAttribute('icon', 'icon-user');
+        $menu->setAttribute('dropdown', true);
 
         // quick switchers
         $menu->addChild(
             'change week',
-            array('route' => 'scss_active_enrollment_week')
+            array('route' => 'volleyball_active_enrollment_week')
         );
 
         $menu->addChild(
             'change facility',
-            array('route' => 'scss_active_enrollment_facility')
+            array('route' => 'volleyball_active_enrollment_facility')
         );
 
         if ($this->securityContext->isGranted('ROLE_FACILITY_ADMIN')) {
             $menu->addChild(
                 'change passel',
-                array('route' => 'scss_active_enrollment_passel')
+                array('route' => 'volleyball_active_enrollment_passel')
             );
         }
 
         if ($this->securityContext->isGranted('ROLE_COUNCIL_ADMIN')) {
             $menu->addChild(
                 'change region',
-                array('route' => 'scss_active_enrollment_region')
+                array('route' => 'volleyball_active_enrollment_region')
             );
         }
 
         if ($this->securityContext->isGranted('ROLE_ORG_ADMIN')) {
             $menu->addChild(
                 'change council',
-                array('route' => 'scss_active_enrollment_council')
+                array('route' => 'volleyball_active_enrollment_council')
             );
         }
 
         if ($this->securityContext->isGranted('ROLE_ADMIN')) {
             $menu->addChild(
                 'change organization',
-                array('route' => 'scss_active_enrollment_organization')
+                array('route' => 'volleyball_active_enrollment_organization')
             );
         }
 
@@ -538,7 +555,7 @@ class MenuBuilder extends BaseBuilder
             $menu->addChild(
                 'enroll',
                 array(
-                    'route' => 'scss_attendee_enrollment_index',
+                    'route' => 'volleyball_attendee_enrollment_index',
                     'routeParameters' => array('attendee_slug' => $this->securityContext->getSlug())
                 )
             );
@@ -548,7 +565,7 @@ class MenuBuilder extends BaseBuilder
             $menu->addChild(
                 'enroll attendees',
                 array(
-                    'route' => 'scss_attendee_enrollment_index',
+                    'route' => 'volleyball_attendee_enrollment_index',
                     'routeParameters' => array('passel_slug' => $enrollment->getPassel())
                 )
             );
@@ -559,7 +576,7 @@ class MenuBuilder extends BaseBuilder
             $menu->addChild(
                 'enroll passels',
                 array(
-                    'route' => 'scss_passel_enrollment_index',
+                    'route' => 'volleyball_passel_enrollment_index',
                     'routeParameters' => array('facility_slug' => $enrollment->getFacility()->getSlug())
                 )
             );
@@ -567,7 +584,7 @@ class MenuBuilder extends BaseBuilder
             $menu->addChild(
                 'enroll passel',
                 array(
-                    'route' => 'scss_passel_enrollment_index',
+                    'route' => 'volleyball_passel_enrollment_index',
                     'routeParameters' => array(
                         'facility_slug' => $enrollment->getFacility()->getSlug(),
                         'passel_slug' => $enrollment->getPassel()->getSlug()
@@ -575,5 +592,7 @@ class MenuBuilder extends BaseBuilder
                 )
             );
         }
+        
+        return $menu;
     }
 }

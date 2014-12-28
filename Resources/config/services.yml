@@ -6,9 +6,11 @@ parameters:
     volleyball.menu.nonauth.class: Knp\Menu\MenuItem
     volleyball.menu.voter.request.class: Volleyball\Bundle\UtilityBundle\Menu\RequestVoter
     
-    volleyball.inflector.class: Volleyball\Component\Utility\Inflector\Inflector
+    volleyball.inflector.class: Volleyball\Bundle\UtilityBundle\Inflector\Inflector
     
     volleyball.controller.utility.class: Volleyball\Bundle\UtilityBundle\Controller\UtilityController
+    
+    volleyball.dashboard.widget_manager.class: Volleyball\Bundle\UtilityBundle\Manager\WidgetManager
         
 services:
     volleyball.listener.utility:
@@ -44,3 +46,7 @@ services:
     volleyball.controller.utility:
         class: "%volleyball.controller.utility.class%"
         arguments: [ "@sylius.controller.configuration_factory" ]
+
+    volleyball.dashboard.widget_manager:
+        class: %volleyball.dashboard.widget_manager.class%
+        arguments: [ "@service_container" ]

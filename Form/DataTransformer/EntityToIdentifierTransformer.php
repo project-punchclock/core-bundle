@@ -1,13 +1,12 @@
 <?php
 namespace Volleyball\Bundle\UtilityBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use \Doctrine\Common\Persistence\ObjectRepository;
+use \Symfony\Component\Form\Exception\TransformationFailedException;
+use \Symfony\Component\Form\Exception\UnexpectedTypeException;
+use \Symfony\Component\PropertyAccess\PropertyAccess;
 
-class EntityToIdentifierTransformer implements DataTransformerInterface
+class EntityToIdentifierTransformer implements \Symfony\Component\Form\DataTransformerInterface
 {
     /**
      * Repository.

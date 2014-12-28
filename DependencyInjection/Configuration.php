@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('volleyball_resource');
+        $rootNode = $treeBuilder->root('volleyball_utility');
 
         $this->addBreadcrumbsSection($rootNode);
 

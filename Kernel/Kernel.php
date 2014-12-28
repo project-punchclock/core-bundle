@@ -29,7 +29,7 @@ abstract class Kernel extends BaseKernel
 
             new \FOS\RestBundle\FOSRestBundle(),
             new \FOS\UserBundle\FOSUserBundle(),
-            new \PUGX\MultiUserBundle\PUGXMultiUserBundle(),
+//            new \PUGX\MultiUserBundle\PUGXMultiUserBundle(),
             
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -41,6 +41,9 @@ abstract class Kernel extends BaseKernel
             new \WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
             
             new \Sylius\Bundle\ResourceBundle\SyliusResourceBundle(),
+            new \Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
+            
+            new \Zenstruck\Bundle\DashboardBundle\ZenstruckDashboardBundle(),
 
             new \Volleyball\Bundle\UserBundle\VolleyballUserBundle(),
             new \Volleyball\Bundle\PasselBundle\VolleyballPasselBundle(),
