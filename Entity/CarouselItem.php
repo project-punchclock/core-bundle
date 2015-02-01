@@ -1,17 +1,17 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Entity;
+namespace ProjectPunchclock\Bundle\CoreBundle\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
 use \Gedmo\Mapping\Annotation as Gedmo;
 use \Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
-use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\EntityBootstrapTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\SluggableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\TimestampableTrait;
 
 /**
-* @ORM\Entity(repositoryClass="Volleyball\Bundle\UtilityBundle\Repository\CarouselItemRepository")
+* @ORM\Entity(repositoryClass="ProjectPunchclock\Bundle\CoreBundle\Repository\CarouselItemRepository")
 * @ORM\Table(name="carousel_item")
 */
 class CarouselItem
@@ -58,7 +58,7 @@ class CarouselItem
     protected $image;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\UtilityBundle\Entity\Carousel", inversedBy="carousel_items")
+     * @ORM\ManyToOne(targetEntity="ProjectPunchclock\Bundle\CoreBundle\Entity\Carousel", inversedBy="carousel_items")
      * @ORM\JoinColumn(name="carousel_id", referencedColumnName="id")
      */
     protected $carousel;
@@ -131,7 +131,7 @@ class CarouselItem
     
     /**
      * Get carousel
-     * @return \Volleyball\Bundle\UtilityBundle\Entity\Carousel
+     * @return \ProjectPunchclock\Bundle\CoreBundle\Entity\Carousel
      */
     public function getCarousel()
     {
@@ -140,10 +140,10 @@ class CarouselItem
     
     /**
      * Set carousel
-     * @param \Volleyball\Bundle\UtilityBundle\Entity\Carousel $carousel
-     * @return \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem
+     * @param \ProjectPunchclock\Bundle\CoreBundle\Entity\Carousel $carousel
+     * @return \ProjectPunchclock\Bundle\CoreBundle\Entity\CarouselItem
      */
-    public function setCarousel(\Volleyball\Bundle\UtilityBundle\Entity\Carousel $carousel)
+    public function setCarousel(\ProjectPunchclock\Bundle\CoreBundle\Entity\Carousel $carousel)
     {
         $this->carousel = $carousel;
         

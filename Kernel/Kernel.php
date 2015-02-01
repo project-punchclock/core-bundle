@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Kernel;
+namespace ProjectPunchclock\Bundle\CoreBundle\Kernel;
 
 use \Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use \Symfony\Component\Config\Loader\LoaderInterface;
@@ -29,7 +29,6 @@ abstract class Kernel extends BaseKernel
 
             new \FOS\RestBundle\FOSRestBundle(),
             new \FOS\UserBundle\FOSUserBundle(),
-//            new \PUGX\MultiUserBundle\PUGXMultiUserBundle(),
             
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -42,19 +41,11 @@ abstract class Kernel extends BaseKernel
             
             new \Sylius\Bundle\ResourceBundle\SyliusResourceBundle(),
             new \Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
-            
-            new \Zenstruck\Bundle\DashboardBundle\ZenstruckDashboardBundle(),
 
-            new \Volleyball\Bundle\UserBundle\VolleyballUserBundle(),
-            new \Volleyball\Bundle\PasselBundle\VolleyballPasselBundle(),
-            new \Volleyball\Bundle\OrganizationBundle\VolleyballOrganizationBundle(),
-            new \Volleyball\Bundle\FacilityBundle\VolleyballFacilityBundle(),
-            new \Volleyball\Bundle\EnrollmentBundle\VolleyballEnrollmentBundle(),
-            new \Volleyball\Bundle\CourseBundle\VolleyballCourseBundle(),
-            new \Volleyball\Bundle\ReportBundle\VolleyballReportBundle(),
-            new \Volleyball\Bundle\UtilityBundle\VolleyballUtilityBundle(),
-            new \Volleyball\Bundle\FixturesBundle\VolleyballFixturesBundle(),
-            new \Volleyball\Bundle\ResourceBundle\VolleyballResourceBundle(),
+            new \ProjectPunchclock\Bundle\UserBundle\ProjectPunchclockUserBundle(),
+            new \ProjectPunchclock\Bundle\CoreBundle\ProjectPunchclockCoreBundle(),
+            new \ProjectPunchclock\Bundle\PunchclockBundle\ProjectPunchclockPunchclockBundle(),
+            new \ProjectPunchclock\Bundle\ProjectBundle\ProjectPunchclockProjectBundle()
         );
         
         if (in_array($this->environment, array('dev', 'test'))) {
@@ -87,7 +78,7 @@ abstract class Kernel extends BaseKernel
     public function getCacheDir()
     {
         if ($this->isVagrantEnvironment()) {
-            return '/dev/shm/volleyball/cache/'.$this->environment;
+            return '/dev/shm/project_punchclock/cache/'.$this->environment;
         }
         
         return parent::getCacheDir();
@@ -98,7 +89,7 @@ abstract class Kernel extends BaseKernel
     public function getLogDir()
     {
         if ($this->isVagrantEnvironment()) {
-            return '/dev/shm/volleyball/log/'.$this->environment;
+            return '/dev/shm/project_punchclock/log/'.$this->environment;
         }
         
         return parent::getLogDir();

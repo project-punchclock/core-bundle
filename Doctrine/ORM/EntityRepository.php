@@ -1,7 +1,7 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Doctrine\ORM;
+namespace ProjectPunchclock\Bundle\CoreBundle\Doctrine\ORM;
 
-class EntityRepository extends \Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository implements \Volleyball\Component\Utility\Interfaces\RepositoryInterface
+class EntityRepository extends \Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository implements \ProjectPunchclock\Bundle\CoreBundle\Interfaces\RepositoryInterface
 {
     protected function getAlias()
     {

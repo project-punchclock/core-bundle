@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\DependencyInjection;
+namespace ProjectPunchclock\Bundle\CoreBundle\DependencyInjection;
 
 use \Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use \Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('volleyball_utility');
+        $rootNode = $treeBuilder->root('project_punchclock_core');
 
         $this->addBreadcrumbsSection($rootNode);
 
@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue("separator")
                     ->end()
                 ->scalarNode("breadcrumbs_listId")
-                    ->defaultValue("volleyball-breadcrumbs")
+                    ->defaultValue("project_punchclock-breadcrumbs")
                     ->end()
                 ->scalarNode("breadcrumbs_listClass")
                     ->defaultValue("breadcrumb")
@@ -48,7 +48,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                     ->end()
                 ->scalarNode("breadcrumbs_viewTemplate")
-                    ->defaultValue("VolleyballResourceBundle:Base:breadcrumbs.html.twig")
+                    ->defaultValue("ProjectPunchclockCoreBundle:Base:breadcrumbs.html.twig")
                     ->end()
                 ->end();
     }

@@ -1,15 +1,15 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Entity;
+namespace ProjectPunchclock\Bundle\CoreBundle\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
 use \Gedmo\Mapping\Annotation as Gedmo;
 use \Symfony\Component\Validator\Constraints as Assert;
 
-use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\GeolocatableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
-use \Volleyball\Bundle\UtilityBundle\Repository\AddressRepository;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\EntityBootstrapTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\SluggableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\GeolocatableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\TimestampableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Repository\AddressRepository;
 
 /**
 * @ORM\Entity(repositoryClass="AddressRepository")
@@ -17,10 +17,26 @@ use \Volleyball\Bundle\UtilityBundle\Repository\AddressRepository;
 */
 class Address
 {
-    use EntityBootstrapTrait;
     use GeolocatableTrait;
     use TimestampableTrait;
     use SluggableTrait;
+    
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+     * Get id
+     * 
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
     
     /**
      * @ORM\Column(type="string")

@@ -1,11 +1,11 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Listener;
+namespace ProjectPunchclock\Bundle\CoreBundle\Listener;
 
 use \Symfony\Component\DependencyInjection\Container;
 use \Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use \Symfony\Component\HttpKernel\HttpKernel;
 
-class UtilityListener
+class CoreListener
 {
     /**
      * container

@@ -8,7 +8,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0-beta.1/css/jquery.dataTables.css">
-    <link href="{{ asset('/bundles/Volleyballutility/css/index.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/bundles/ProjectPunchclockcore/css/index.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-        {% include 'VolleyballUtilityBundle:Base:Breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs } %}
+        {% include 'ProjectPunchclockCoreBundle:Base:Breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs } %}
 {% endblock %}
 
 {% block main_content %}{% endblock %}

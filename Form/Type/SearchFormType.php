@@ -1,9 +1,9 @@
 <?php
-namespace Volleyball\Bundle\PasselBundle\Form\Type;
+namespace ProjectPunchclock\Bundle\PasselBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use \Symfony\Component\Form\FormBuilderInterface;
 
 class SearchType extends AbstractType
 {

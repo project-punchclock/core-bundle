@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Repository;
+namespace ProjectPunchclock\Bundle\CoreBundle\Repository;
 
 use \Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 

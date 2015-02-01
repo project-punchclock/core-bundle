@@ -1,15 +1,11 @@
 {
-    "name": "volleyball/utility-bundle",
+    "name": "project-punchclock/core-bundle",
     "type": "library",
-    "description": "utility bundle utilizing the utility component of the volleyball system.",
+    "description": "core bundle utilizing the core component of the project punchclock system.",
     "keywords": [
-        "scheduling",
-        "scheduling system",
-        "utility",
-        "carousel",
-        "address"
+        "core"
     ],
-    "homepage": "http://volleyball.daviddurost.net",
+    "homepage": "http://punchclock.daviddurost.net",
     "license": "MIT",
     "authors": [
         {
@@ -24,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Volleyball\\Bundle\\UtilityBundle\\": ""
+            "ProjectPunchclock\\Bundle\\CoreBundle\\": ""
         }
     },
     "extra": {

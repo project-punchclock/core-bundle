@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Traits;
+namespace ProjectPunchclock\Bundle\CoreBundle\Traits;
 
 trait TimestampableTrait
 {

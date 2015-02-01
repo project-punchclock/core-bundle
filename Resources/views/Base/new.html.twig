@@ -6,7 +6,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('/bundles/Volleyballuser/css/Base/index.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/bundles/ProjectPunchclockuser/css/Base/index.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-        {% include 'VolleyballUtilityBundle:Base:Breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs } %}
+        {% include 'ProjectPunchclockCoreBundle:Base:Breadcrumbs.html.twig' with { 'breadcrumbs': breadcrumbs } %}
 {% endblock %}
 
 {% block main_content %}{% endblock %}{# empty Twig template #}

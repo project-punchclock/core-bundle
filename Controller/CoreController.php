@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Controller;
+namespace ProjectPunchclock\Bundle\CoreBundle\Controller;
 
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\DependencyInjection\ContainerInterface;
@@ -12,7 +12,7 @@ use \Sylius\Bundle\ResourceBundle\Controller\Configuration;
 use \Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
 use \Sylius\Bundle\ResourceBundle\ExpressionLanguage\ExpressionLanguage;
 
-class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\ResourceController implements ContainerAwareInterface
+class CoreController extends \Sylius\Bundle\ResourceBundle\Controller\ResourceController implements ContainerAwareInterface
 {
     /**
      * configuration settings
@@ -70,9 +70,9 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
             $parser = new ParametersParser(new ExpressionLanguage());
             $config = new Configuration(
                 $parser,
-                'volleyball',
+                'project_punchclock',
                 'user',
-                'VolleyballResourceBundle:Base',
+                'ProjectPunchclockCoreBundle:Base',
                 'twig',
                 array('sortable' => true, 'filterable' => true, 'paginate' => true, 'default_page_size' => 10)
             );
@@ -144,7 +144,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function indexAction(Request $request)
     {
         list($class, $tmp) = explode('Controller', get_class($this));
-        $this->breadcrumbs->addItem($this->get('volleyball.inflector')->pluralize($class));
+        $this->breadcrumbs->addItem($this->get('project_punchclock.core.inflector')->pluralize($class));
         
         return parent::indexAction($request);
     }
@@ -155,7 +155,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function showAction(Request $request)
     {
         list($class, $tmp) = explode('Controller', get_class($this), 1);
-        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add($this->get('project_punchclock.core.inflector')->pluralize($class));
         $this->breadcrumbs->add('show');
         
         
@@ -168,7 +168,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function createAction(Request $request)
     {
         list($class, $tmp) = explode('Controller', get_class($this), 1);
-        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add($this->get('project_punchclock.core.inflector')->pluralize($class));
         $this->breadcrumbs->add('new');
         
         
@@ -181,7 +181,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function updateAction(Request $request)
     {
         list($class, $tmp) = explode('Controller', get_class($this), 1);
-        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add($this->get('project_punchclock.core.inflector')->pluralize($class));
         $this->breadcrumbs->add('update');
         
         
@@ -194,7 +194,7 @@ class UtilityController extends \Sylius\Bundle\ResourceBundle\Controller\Resourc
     public function deleteAction(Request $request)
     {
         list($class, $tmp) = explode('Controller', get_class($this), 1);
-        $this->breadcrumbs->add($this->get('volleyball.utility.inflector')->pluralize($class));
+        $this->breadcrumbs->add($this->get('project_punchclock.core.inflector')->pluralize($class));
         $this->breadcrumbs->add('delete');
         
         

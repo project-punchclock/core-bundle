@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Inflector;
+namespace ProjectPunchclock\Bundle\CoreBundle\Inflector;
 
 class Inflector
 {

@@ -1,12 +1,12 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\DependencyInjection;
+namespace ProjectPunchclock\Bundle\CoreBundle\DependencyInjection;
 
 use \Symfony\Component\Config\FileLocator;
 use \Symfony\Component\DependencyInjection\ContainerBuilder;
 use \Symfony\Component\DependencyInjection\Loader;
 use \Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class VolleyballUtilityExtension extends Extension
+class ProjectPunchclockCoreExtension extends Extension
 {
     /**
      * {@inheritdoc}

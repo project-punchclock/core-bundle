@@ -1,13 +1,13 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle;
+namespace ProjectPunchclock\Bundle\CoreBundle;
 
 use \Symfony\Component\DependencyInjection\ContainerBuilder;
 use \Sylius\Bundle\ResourceBundle\AbstractResourceBundle;
 use \Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 
-use \Volleyball\Bundle\UtilityBundle\DependencyInjection\Compiler\ObjectToIdentifierServicePass;
+use \ProjectPunchclock\Bundle\CoreBundle\DependencyInjection\Compiler\ObjectToIdentifierServicePass;
 
-class VolleyballUtilityBundle extends AbstractResourceBundle
+class ProjectPunchclockCoreBundle extends AbstractResourceBundle
 {
     public static function getSupportedDrivers()
     {
@@ -29,6 +29,6 @@ class VolleyballUtilityBundle extends AbstractResourceBundle
      */
     protected function getBundlePrefix()
     {
-        return 'volleyball_utility';
+        return 'project_punchclock_core';
     }
 }

@@ -1,11 +1,11 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Form\Type;
+namespace ProjectPunchclock\Bundle\CoreBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Volleyball\Bundle\UtilityBundle\Form\DataTransformer\EntityToIdentifierTransformer;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use \Doctrine\Common\Persistence\ObjectManager;
+use \ProjectPunchclock\Bundle\CoreBundle\Form\DataTransformer\EntityToIdentifierTransformer;
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntityToIdentifierType extends AbstractType
 {
@@ -62,6 +62,6 @@ class EntityToIdentifierType extends AbstractType
      */
     public function getName()
     {
-        return 'volleyball_entity_to_identifier';
+        return 'project_punchclock_entity_to_identifier';
     }
 }

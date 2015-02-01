@@ -1,52 +1,46 @@
 parameters:
-    volleyball.listener.utility.class: Volleyball\Bundle\UtilityBundle\Listener\UtilityListener
+    project_punchclock.listener.core.class: ProjectPunchclock\Bundle\CoreBundle\Listener\CoreListener
     
-    volleyball.menu.builder.class: Volleyball\Bundle\UtilityBundle\Menu\MenuBuilder
-    volleyball.menu.main.class: Knp\Menu\MenuItem
-    volleyball.menu.nonauth.class: Knp\Menu\MenuItem
-    volleyball.menu.voter.request.class: Volleyball\Bundle\UtilityBundle\Menu\RequestVoter
+    project_punchclock.menu.builder.class: ProjectPunchclock\Bundle\CoreBundle\Menu\MenuBuilder
+    project_punchclock.menu.main.class: Knp\Menu\MenuItem
+    project_punchclock.menu.nonauth.class: Knp\Menu\MenuItem
+    project_punchclock.menu.voter.request.class: ProjectPunchclock\Bundle\CoreBundle\Menu\RequestVoter
     
-    volleyball.inflector.class: Volleyball\Bundle\UtilityBundle\Inflector\Inflector
+    project_punchclock.inflector.class: ProjectPunchclock\Bundle\CoreBundle\Inflector\Inflector
     
-    volleyball.controller.utility.class: Volleyball\Bundle\UtilityBundle\Controller\UtilityController
-    
-    volleyball.dashboard.widget_manager.class: Volleyball\Bundle\UtilityBundle\Manager\WidgetManager
-        
+    project_punchclock.controller.core.class: ProjectPunchclock\Bundle\CoreBundle\Controller\CoreController
+  
 services:
-    volleyball.listener.utility:
-        class: %volleyball.listener.utility.class%
+    project_punchclock.listener.core:
+        class: %project_punchclock.listener.core.class%
         tags: [{ name: kernel.event_listener, event: kernel.request, method: onKernelRequest }]
         arguments: [ @service_container ]
     
-    volleyball.menu.builder:
-        class: %volleyball.menu.builder.class%
+    project_punchclock.menu.builder:
+        class: %project_punchclock.menu.builder.class%
         arguments: ["@knp_menu.factory", "@security.context", "@translator"]
-    volleyball.menu.main:
-        class: %volleyball.menu.main.class%
-        factory_service: volleyball.menu.builder
+    project_punchclock.menu.main:
+        class: %project_punchclock.menu.main.class%
+        factory_service: project_punchclock.menu.builder
         factory_method: createMainMenu
         arguments: [ "@request" ]
         scope: request
         tags: [{ name: knp_menu.menu, alias: main }]
-    volleyball.menu.nonauth:
-        class: %volleyball.menu.nonauth.class%
-        factory_service: volleyball.menu.builder
+    project_punchclock.menu.nonauth:
+        class: %project_punchclock.menu.nonauth.class%
+        factory_service: project_punchclock.menu.builder
         factory_method: createNonAuthMenu
         arguments: [ "@request" ]
         scope: request
         tags: [{ name: knp_menu.menu, alias: nonauth }]          
-    volleyball.menu.voter.request:
-        class: %volleyball.menu.voter.request.class%
+    project_punchclock.menu.voter.request:
+        class: %project_punchclock.menu.voter.request.class%
         arguments: [ "@service_container" ]
         tags: [{ name: knp_menu.voter }]
             
-    volleyball.inflector: 
-        class: %volleyball.inflector.class%
+    project_punchclock.inflector: 
+        class: %project_punchclock.inflector.class%
     
-    volleyball.controller.utility:
-        class: "%volleyball.controller.utility.class%"
+    project_punchclock.controller.core:
+        class: "%project_punchclock.controller.core.class%"
         arguments: [ "@sylius.controller.configuration_factory" ]
-
-    volleyball.dashboard.widget_manager:
-        class: %volleyball.dashboard.widget_manager.class%
-        arguments: [ "@service_container" ]

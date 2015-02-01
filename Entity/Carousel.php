@@ -1,18 +1,18 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Entity;
+namespace ProjectPunchclock\Bundle\CoreBundle\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
 use \Gedmo\Mapping\Annotation as Gedmo;
 use \Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
-use \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem;
-use \Volleyball\Bundle\UtilityBundle\Traits\EntityBootstrapTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Entity\CarouselItem;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\EntityBootstrapTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\SluggableTrait;
+use \ProjectPunchclock\Bundle\CoreBundle\Traits\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="Volleyball\Bundle\UtilityBundle\Repository\CarouselRepository")
+ * @ORM\Entity(repositoryClass="ProjectPunchclock\Bundle\CoreBundle\Repository\CarouselRepository")
  * @ORM\Table(name="carousel")
  */
 class Carousel
@@ -82,7 +82,7 @@ class Carousel
     /**
      * {@inheritdoc}
      */
-    public function addItem(\Volleyball\Component\Utility\Model\CarouselItem $item)
+    public function addItem(\ProjectPunchclock\Component\Core\Model\CarouselItem $item)
     {
         $this->items[] = $item;
         
