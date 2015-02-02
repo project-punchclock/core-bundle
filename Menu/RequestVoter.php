@@ -1,31 +1,36 @@
 <?php
-namespace Volleyball\Bundle\UtilityBundle\Menu;
+namespace ProjectPunchclock\Bundle\CoreBundle\Menu;
  
-use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\Voter\VoterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
- 
-class RequestVoter implements VoterInterface
+class RequestVoter implements \Knp\Menu\Matcher\Voter\VoterInterface
 {
- 
+    /**
+     * Container
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
     private $container;
  
-    public function __construct(ContainerInterface $container)
+    /**
+     * Construct
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     */
+    public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container)
     {
         $this->container = $container;
     }
  
-    public function matchItem(ItemInterface $item)
+    /**
+     * Match item
+     * @param \Knp\Menu\ItemInterface $item
+     * @return boolean
+     */
+    public function matchItem(\Knp\Menu\ItemInterface $item)
     {
-    	if ($item->getUri() === $this->container->get('request')->getRequestUri()) {
-    		
+        if ($item->getUri() === $this->container->get('request')->getRequestUri()) {
             return true;
-        } else if($item->getUri() !== '/' && (substr($this->container->get('request')->getRequestUri(), 0, strlen($item->getUri())) === $item->getUri())) {
-        	
+        } elseif ($item->getUri() !== '/' && (substr($this->container->get('request')->getRequestUri(), 0, strlen($item->getUri())) === $item->getUri())) {
             return true;
-    	}
+        }
         
         return null;
     }
-    
 }
